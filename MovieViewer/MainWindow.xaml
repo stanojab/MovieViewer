@@ -5,8 +5,63 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MovieViewer"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MovieViewer" Height="600" Width="800">
     <Grid>
+        <Grid.RowDefinitions>
+            <!--MenuBar, sizes itself-->
+            <RowDefinition Height="Auto"></RowDefinition>
+            <!--MainContent set to fit the rest of the screen-->
+            <RowDefinition Height="*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <!--Menu will be the first row of the grid-->
+        <Menu Grid.Row="0">
+            <MenuItem Header="Datoteka">
+                <MenuItem Header="Izhod"/>
+            </MenuItem>
+            <MenuItem Header="Filmi">
+                <MenuItem Header="Dodaj statično"/>
+                <MenuItem Header="Uredi statično"/>
+                <MenuItem Header="Dodaj"/>
+                <MenuItem Header="Uredi"/>
+                <MenuItem Header="Odstrani"/>
+            </MenuItem>
+        </Menu>
+        <!--MainContent-->
+        <DockPanel Grid.Row="1" LastChildFill="True">
+            <!--ListView for list of movies-->
+            <ListView Name="MovieListView" DockPanel.Dock="left"  Width="250">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Seznam filmov" DisplayMemberBinding="{Binding Name}" Width="200"></GridViewColumn>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+            
+               <!--Movie Details-->
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
 
+                <TextBox Name="MovieNameTextBox" Grid.Row="0" Height="30" Margin="10" IsReadOnly="True"/>
+                <Image Name="MoviePoster" Grid.Row="1" Stretch="Uniform" Margin="10" Height="200"/>
+
+                <StackPanel Grid.Row="2" Orientation="Vertical" Margin="10">
+                    <Label Name="MovieDetailsLabe" Content="Ocena Filma"/>
+                   
+                    <ComboBox Name="MovieRatingComboBox" Width="150" >
+                         <ComboBoxItem Content="1"/>
+                        <ComboBoxItem Content="2"/>
+                        <ComboBoxItem Content="3"/>
+                        <ComboBoxItem Content="4"/>
+                        <ComboBoxItem Content="5"/>
+                    </ComboBox>
+                         <Button Name="AddToFavoritesButton" Content="Dodaj v priljubljene" Width="150" Margin="5"/>      
+                </StackPanel>
+            </Grid>
+            
+        </DockPanel>
     </Grid>
 </Window>
