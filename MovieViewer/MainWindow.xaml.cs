@@ -1,5 +1,6 @@
 ﻿using System.Collections.ObjectModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace MovieViewer
@@ -45,7 +46,7 @@ namespace MovieViewer
         Name = "The Dark Knight",
         Director = "Christopher Nolan",
         ReleaseYear = "2008",
-        Description = "Batman sets out to dismantle the remaining criminal organizations in Gotham with the help of allies.",
+        Description = "When a menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman, James Gordon and Harvey Dent must work together to put an end to the madness.",
         Actors = new ObservableCollection<string> { "Christian Bale", "Heath Ledger", "Aaron Eckhart" },
         Genres = new ObservableCollection<string> { "Action", "Crime", "Drama" },
         ImagePath = "C:\\Users\\STANOJA\\Desktop\\faks2sem3god\\MovieViewer\\MovieViewer\\inception.jpg",
@@ -63,15 +64,19 @@ namespace MovieViewer
             }
         }
 
-        private void AddToFavoritesButton_Click(object sender, RoutedEventArgs e)
+        private void ToggleFavorite_Click(object sender, RoutedEventArgs e)
         {
-            if (MovieListView.SelectedItem is Movie selectedMovie)
+            // Get the clicked button
+            if (sender is Button button && button.DataContext is Movie movie)
             {
-                selectedMovie.IsFavorite = !selectedMovie.IsFavorite;  
+                movie.ToggleFavorite(); // Call the method to toggle favorite
             }
         }
 
-
+        private void Izhod_Click(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
 
     }
 

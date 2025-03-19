@@ -5,18 +5,23 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MovieViewer"
         mc:Ignorable="d"
-        Title="MovieViewer" Height="600" Width="800">
-   <Grid>
+        Title="MovieViewer" Height="600" Width="900">
+
+    <Window.Resources>
+        <local:BoolToFavoriteTextConverter x:Key="BoolToFavoriteTextConverter"/>
+    </Window.Resources>
+    <Grid>
         <Grid.RowDefinitions>
-            <!--MenuBar, sizes itself-->
-            <RowDefinition Height="Auto"></RowDefinition>
-            <!--MainContent set to fit the rest of the screen-->
-            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"/>
+            <!-- MenuBar -->
+            <RowDefinition Height="*"/>
+            <!-- Movie List -->
         </Grid.RowDefinitions>
-        <!--Menu will be the first row of the grid-->
+
+        <!-- Menu -->
         <Menu Grid.Row="0">
             <MenuItem Header="Datoteka">
-                <MenuItem Header="Izhod"/>
+                <MenuItem Header="Izhod" Click="Izhod_Click"/>
             </MenuItem>
             <MenuItem Header="Filmi">
                 <MenuItem Header="Dodaj statično"/>
@@ -26,53 +31,84 @@
                 <MenuItem Header="Odstrani"/>
             </MenuItem>
         </Menu>
-        <!--MainContent-->
-        <DockPanel Grid.Row="1" LastChildFill="True">
-            <!--ListView for list of movies-->
-             <!-- ListView for Movies -->
-            <ListView Name="MovieListView" DockPanel.Dock="Left" Width="250"
-                      ItemsSource="{Binding Movies}" 
-                      SelectedItem="{Binding SelectedMovie, Mode=TwoWay}" 
-                      MouseDoubleClick="MovieListView_DoubleClick">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <StackPanel Orientation="Horizontal">
-                            <Image Source="{Binding ImagePath}" Width="50" Height="75" Margin="5"/>
-                            <StackPanel Orientation="Vertical">
-                                <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
-                                <TextBlock Text="{Binding ReleaseYear}" FontStyle="Italic"/>
-                                <TextBlock Text="{Binding Director}"/>
+
+        <!-- Movie List -->
+        <ListView Name="MovieListView" Grid.Row="1" ItemsSource="{Binding Movies}" 
+                  SelectedItem="{Binding SelectedMovie, Mode=TwoWay}" 
+                  MouseDoubleClick="MovieListView_DoubleClick"
+                  HorizontalContentAlignment="Stretch"
+                  HorizontalAlignment="Stretch"
+                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+            <!-- Ensures rows stretch -->
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Border BorderThickness="3" BorderBrush="Gray" Padding="5" Margin="5">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <!-- Image (30%) -->
+                                <ColumnDefinition Width="*"/>
+                                <!-- Description (50%) -->
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- Left Section (Image + Name + Director) -->
+                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
+                                <Image Source="{Binding ImagePath}" MaxWidth= "250" Height="Auto" Stretch="UniformToFill" Margin="5"/>
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14" Margin="5" TextAlignment="Center"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                                    <TextBlock Text="Director: " FontStyle="Italic" FontSize="12" Margin="2"/>
+                                    <TextBlock Text="{Binding Director}" FontStyle="Italic" FontSize="12" Margin="2"/>
+                                </StackPanel>
                             </StackPanel>
-                        </StackPanel>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-            </ListView>
-            
-               <!--Movie Details-->
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto"/>
-                    <RowDefinition Height="*"/>
-                    <RowDefinition Height="Auto"/>
-                </Grid.RowDefinitions>
 
-                <TextBox Name="MovieNameTextBox" Grid.Row="0" Height="30" Margin="10" IsReadOnly="True"/>
-                <Image Name="MoviePoster" Grid.Row="1" Stretch="Uniform" Margin="10" Height="200"/>
+                            <!-- Middle Section (Description - Stretches to Fill) -->
+                            <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10">
+                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="18"/>
 
-                <StackPanel Grid.Row="2" Orientation="Vertical" Margin="10">
-                    <Label Name="MovieDetailsLabe" Content="Ocena Filma"/>
-                   
-                    <ComboBox Name="MovieRatingComboBox" Width="150" >
-                         <ComboBoxItem Content="1"/>
-                        <ComboBoxItem Content="2"/>
-                        <ComboBoxItem Content="3"/>
-                        <ComboBoxItem Content="4"/>
-                        <ComboBoxItem Content="5"/>
-                    </ComboBox>
-                         <Button Name="AddToFavoritesButton" Content="Dodaj v priljubljene" Width="150" Margin="5"/>      
-                </StackPanel>
-            </Grid>
-            
-        </DockPanel>
+                                <!-- Genres Section -->
+                                <StackPanel Orientation="Horizontal" Margin="5 2 0 0">
+                                    <TextBlock Text="Genres: " FontWeight="Bold" FontSize="12"/>
+                                    <ItemsControl ItemsSource="{Binding Genres}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="2 0 0 0"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+
+                                <!-- Actors Section -->
+                                <StackPanel Orientation="Horizontal" Margin="5 2 0 0">
+                                    <TextBlock Text="Stars: " FontWeight="Bold" FontSize="12"/>
+                                    <ItemsControl ItemsSource="{Binding Actors}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="2 0 0 0"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+                            </StackPanel>
+
+                            <!-- Right Section (Rating + Favorite Button) -->
+                            <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center" >
+                                <TextBlock Text="Ocena:" FontWeight="Bold" Margin="5"/>
+                                <ComboBox Width="75" SelectedItem="{Binding Rating}">
+                                    <ComboBoxItem Content="1"/>
+                                    <ComboBoxItem Content="2"/>
+                                    <ComboBoxItem Content="3"/>
+                                    <ComboBoxItem Content="4"/>
+                                    <ComboBoxItem Content="5"/>
+                                </ComboBox>
+                                <Button Content="{Binding IsFavorite, Converter={StaticResource BoolToFavoriteTextConverter}}"
+        Width="150" Margin="10"
+        Click="ToggleFavorite_Click"/>
+                            </StackPanel>
+                        </Grid>
+                    </Border>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </Window>

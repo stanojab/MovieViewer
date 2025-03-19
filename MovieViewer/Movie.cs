@@ -39,5 +39,10 @@ namespace MovieViewer
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        public void ToggleFavorite()
+        {
+            IsFavorite = !IsFavorite;
+        }
     }
 }
