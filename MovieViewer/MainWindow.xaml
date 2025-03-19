@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MovieViewer"
         mc:Ignorable="d"
         Title="MovieViewer" Height="600" Width="800">
-    <Grid>
+   <Grid>
         <Grid.RowDefinitions>
             <!--MenuBar, sizes itself-->
             <RowDefinition Height="Auto"></RowDefinition>
@@ -29,12 +29,23 @@
         <!--MainContent-->
         <DockPanel Grid.Row="1" LastChildFill="True">
             <!--ListView for list of movies-->
-            <ListView Name="MovieListView" DockPanel.Dock="left"  Width="250">
-                <ListView.View>
-                    <GridView>
-                        <GridViewColumn Header="Seznam filmov" DisplayMemberBinding="{Binding Name}" Width="200"></GridViewColumn>
-                    </GridView>
-                </ListView.View>
+             <!-- ListView for Movies -->
+            <ListView Name="MovieListView" DockPanel.Dock="Left" Width="250"
+                      ItemsSource="{Binding Movies}" 
+                      SelectedItem="{Binding SelectedMovie, Mode=TwoWay}" 
+                      MouseDoubleClick="MovieListView_DoubleClick">
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <Image Source="{Binding ImagePath}" Width="50" Height="75" Margin="5"/>
+                            <StackPanel Orientation="Vertical">
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold"/>
+                                <TextBlock Text="{Binding ReleaseYear}" FontStyle="Italic"/>
+                                <TextBlock Text="{Binding Director}"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
             </ListView>
             
                <!--Movie Details-->
