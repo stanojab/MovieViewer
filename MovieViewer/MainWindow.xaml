@@ -6,10 +6,8 @@
         xmlns:local="clr-namespace:MovieViewer"
         mc:Ignorable="d"
         Title="MovieViewer" Height="600" Width="900">
-
-    <Window.Resources>
-        <local:BoolToFavoriteTextConverter x:Key="BoolToFavoriteTextConverter"/>
-    </Window.Resources>
+   
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
@@ -24,11 +22,13 @@
                 <MenuItem Header="Izhod" Click="Izhod_Click"/>
             </MenuItem>
             <MenuItem Header="Filmi">
-                <MenuItem Header="Dodaj statično"/>
-                <MenuItem Header="Uredi statično"/>
+                <MenuItem Header="Dodaj statično" Command="{Binding AddStaticMovieCommand}"/>
+                <MenuItem Header="Uredi statično" Command="{Binding EditStaticMovieCommand}" IsEnabled="{Binding SelectedMovie, Mode=OneWay}"  />
                 <MenuItem Header="Dodaj"/>
                 <MenuItem Header="Uredi"/>
-                <MenuItem Header="Odstrani"/>
+                <MenuItem Header="Odstrani"
+Command="{Binding RemoveMovieCommand}"
+IsEnabled="{Binding SelectedMovie, Mode=OneWay}"/>
             </MenuItem>
         </Menu>
 
@@ -77,6 +77,30 @@
                             <!-- Middle Section (Description - Stretches to Fill) -->
                             <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10">
                                 <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="18"/>
+
+                                <!-- Genres Section -->
+                                <StackPanel Orientation="Horizontal" Margin="5 2 0 0">
+                                    <TextBlock Text="Genres: " FontWeight="Bold" FontSize="12"/>
+                                    <ItemsControl ItemsSource="{Binding Genres}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="2 0 0 0"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
+
+                                <!-- Actors Section -->
+                                <StackPanel Orientation="Horizontal" Margin="5 2 0 0">
+                                    <TextBlock Text="Stars: " FontWeight="Bold" FontSize="12"/>
+                                    <ItemsControl ItemsSource="{Binding Actors}">
+                                        <ItemsControl.ItemTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="2 0 0 0"/>
+                                            </DataTemplate>
+                                        </ItemsControl.ItemTemplate>
+                                    </ItemsControl>
+                                </StackPanel>
                             </StackPanel>
 
                             <!-- Right Section (Rating + Favorite Button) -->
@@ -89,7 +113,7 @@
                                     <ComboBoxItem Content="4"/>
                                     <ComboBoxItem Content="5"/>
                                 </ComboBox>
-                                <Button Width="120" Margin="10" Command="{Binding ToggleFavoriteCommand}" Click="ToggleFavorite_Click">
+                                <Button Width="120" Margin="10"  Click="ToggleFavorite_Click">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <Image Width="20" Height="20">
                                             <Image.Style>
