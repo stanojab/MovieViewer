@@ -66,10 +66,10 @@ namespace MovieViewer
 
         private void ToggleFavorite_Click(object sender, RoutedEventArgs e)
         {
-            // Get the clicked button
+            
             if (sender is Button button && button.DataContext is Movie movie)
             {
-                movie.ToggleFavorite(); // Call the method to toggle favorite
+                movie.ToggleFavorite(); 
             }
         }
 
