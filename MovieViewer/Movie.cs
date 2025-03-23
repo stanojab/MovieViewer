@@ -12,11 +12,22 @@ namespace MovieViewer
     {
         private bool isFavorite;
 
+        public double Rating {  get; set; }
+
         public string Name { get; set; }
         public string Description { get; set; }
         public string Director { get; set; }
         public string ReleaseYear { get; set; }
-        public ObservableCollection<string> Actors { get; set; }
+        private ObservableCollection<string> _actors;
+        public ObservableCollection<string> Actors
+        {
+            get => _actors;
+            set
+            {
+                _actors = value;
+                OnPropertyChanged(nameof(Actors));
+            }
+        }
         public ObservableCollection<string> Genres { get; set; }
         public string ImagePath { get; set; }
 
@@ -44,5 +55,6 @@ namespace MovieViewer
         {
             IsFavorite = !IsFavorite;
         }
+        public string GenresString => string.Join(", ", Genres);
     }
 }

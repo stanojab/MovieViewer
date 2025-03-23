@@ -23,7 +23,7 @@ namespace MovieViewer
             return _canExecute == null || _canExecute(parameter);
         }
 
-        public void Execute(object? parameter)
+        public void Execute(object? parameter) 
         {
             _execute(parameter);
         }

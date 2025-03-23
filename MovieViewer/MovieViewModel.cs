@@ -47,22 +47,24 @@ namespace MovieViewer
                     Name = "Inception",
                     Director = "Christopher Nolan",
                     ReleaseYear = "2010",
-                    Description = "A thief who enters the dreams of others to steal secrets from their subconscious.",
+                    Rating = 9.2,
+                    Description = "A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O., but his tragic past may doom the project and his team to disaster.",
                     Actors = new ObservableCollection<string> { "Leonardo DiCaprio", "Joseph Gordon-Levitt", "Elliot Page" },
                     Genres = new ObservableCollection<string> { "Sci-Fi", "Thriller" },
-                    ImagePath = "C:\\Users\\STANOJA\\Desktop\\faks2sem3god\\MovieViewer\\MovieViewer\\inception.jpg",
+                    ImagePath = "Assets\\MovieImages\\inception.jpg",
                     IsFavorite = false
                 },
 
                 new Movie
                 {
-                    Name = "Interstellar",
-                    Director = "Christopher Nolan",
-                    ReleaseYear = "2014",
-                    Description = "A team of explorers travel through a wormhole in space in an attempt to ensure humanity's survival.",
-                    Actors = new ObservableCollection<string> { "Matthew McConaughey", "Anne Hathaway", "Jessica Chastain" },
-                    Genres = new ObservableCollection<string> { "Sci-Fi", "Adventure", "Drama" },
-                    ImagePath = "C:\\Users\\STANOJA\\Desktop\\faks2sem3god\\MovieViewer\\MovieViewer\\inception.jpg",
+                    Name = "Pulp Fiction",
+                    Director = "Quentin Tarantino",
+                    ReleaseYear = "1994",
+                    Rating = 8.9,
+                    Description = "The lives of two mob hitmen, a boxer, a gangster and his wife, and a pair of diner bandits intertwine in four tales of violence and redemption.",
+                    Actors = new ObservableCollection<string> { "John Travolta", "Uma Thurman", "Samuel L. Jackson" },
+                    Genres = new ObservableCollection<string> { "Dark Comedy", "Drug Crime", "Gangster" },
+                    ImagePath = "Assets\\MovieImages\\pulpFiction.jpg",
                     IsFavorite = true
                 },
 
@@ -71,20 +73,21 @@ namespace MovieViewer
                     Name = "The Dark Knight",
                     Director = "Christopher Nolan",
                     ReleaseYear = "2008",
+                    Rating=9.1,
                     Description = "When a menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman, James Gordon and Harvey Dent must work together to put an end to the madness.",
                     Actors = new ObservableCollection<string> { "Christian Bale", "Heath Ledger", "Aaron Eckhart" },
                     Genres = new ObservableCollection<string> { "Action", "Crime", "Drama" },
-                    ImagePath = "C:\\Users\\STANOJA\\Desktop\\faks2sem3god\\MovieViewer\\MovieViewer\\inception.jpg",
+                    ImagePath = "Assets\\MovieImages\\darkKnight.jpg",
                     IsFavorite = false
                 }
             };
 
             AddStaticMovieCommand = new RelayCommand(AddStaticMovie);
             RemoveMovieCommand = new RelayCommand(
-                 execute: RemoveSelectedMovie,
-                 canExecute: CanRemoveMovie
+                  RemoveSelectedMovie,
+                  CanRemoveMovie
              );
-            EditStaticMovieCommand = new RelayCommand(execute:EditStaticMovie, canExecute: CanEditMovie);
+            EditStaticMovieCommand = new RelayCommand(EditStaticMovie,CanEditMovie);
         }
 
 
@@ -96,10 +99,11 @@ namespace MovieViewer
                     Name = "The Shawshank Redemption",
                     Director = "Frank Darabont",
                     ReleaseYear = "1994",
+                    Rating = 9.3,
                     Description = "A banker convicted of uxoricide forms a friendship over a quarter century with a hardened convict, while maintaining his innocence and trying to remain hopeful through simple compassion.",
-                    Actors = new ObservableCollection<string> { "Tim Robbins", "Morgan Freeman" },
+                    Actors = new ObservableCollection<string> { "Tim Robbins", "Morgan Freeman" , "Bob Gunton" },
                     Genres = new ObservableCollection<string> { "Epic", "Prison Drama" },
-                    ImagePath = "C:\\Users\\STANOJA\\Desktop\\faks2sem3god\\MovieViewer\\MovieViewer\\Assets\\MovieImages\\shawShankPoster.jpg",
+                    ImagePath = "Assets\\MovieImages\\SShank.jpg",
                     IsFavorite = false
                 });
 
@@ -124,7 +128,7 @@ namespace MovieViewer
         {
             if (SelectedMovie != null)
             {
-                SelectedMovie.Actors = new ObservableCollection<string> { "New Actor 1", "New Actor 2" };
+                SelectedMovie.Actors = new ObservableCollection<string> { "NewStar1 ", "NewStar2" , "NewStar3" };
             }
         }
 

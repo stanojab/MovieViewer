@@ -5,53 +5,50 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MovieViewer"
         mc:Ignorable="d"
-        Title="MovieViewer" Height="600" Width="900">
+        Title="MovieViewer" Height="900" Width="1200">
    
     
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            <!-- MenuBar -->
+            
             <RowDefinition Height="*"/>
-            <!-- Movie List -->
+            
         </Grid.RowDefinitions>
 
-        <!-- Menu -->
         <Menu Grid.Row="0">
             <MenuItem Header="Datoteka">
                 <MenuItem Header="Izhod" Click="Izhod_Click"/>
             </MenuItem>
             <MenuItem Header="Filmi">
                 <MenuItem Header="Dodaj statično" Command="{Binding AddStaticMovieCommand}"/>
-                <MenuItem Header="Uredi statično" Command="{Binding EditStaticMovieCommand}" IsEnabled="{Binding SelectedMovie, Mode=OneWay}"  />
+                <MenuItem Header="Uredi statično" Command="{Binding EditStaticMovieCommand}"   />
                 <MenuItem Header="Dodaj"/>
                 <MenuItem Header="Uredi"/>
-                <MenuItem Header="Odstrani"
-Command="{Binding RemoveMovieCommand}"
-IsEnabled="{Binding SelectedMovie, Mode=OneWay}"/>
+                <MenuItem Header="Odstrani" Command="{Binding RemoveMovieCommand}"/>
             </MenuItem>
         </Menu>
 
-        <!-- Movie List -->
+        
         <ListView Name="MovieListView" Grid.Row="1" ItemsSource="{Binding Movies}" 
                   SelectedItem="{Binding SelectedMovie, Mode=TwoWay}" 
                   MouseDoubleClick="MovieListView_DoubleClick"
                   HorizontalContentAlignment="Stretch"
                   HorizontalAlignment="Stretch"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-            <!-- Ensures rows stretch -->
+         
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="3" Padding="5" Margin="5">
+                    <Border BorderThickness="3" Padding="5" Margin="5" CornerRadius="10">
                         <Border.Style>
                             <Style TargetType="Border">
                                 <Setter Property="BorderBrush" Value="Gray"/>
-                                <!-- Default color -->
+                                
                                 <Style.Triggers>
                                     <DataTrigger Binding="{Binding IsFavorite}" Value="True">
                                         <Setter Property="BorderBrush" Value="Gold"/>
                                         <Setter Property="BorderThickness" Value="100"/>
-                                        <!-- Highlight favorites -->
+                                        
                                     </DataTrigger>
                                 </Style.Triggers>
                             </Style>
@@ -64,74 +61,110 @@ IsEnabled="{Binding SelectedMovie, Mode=OneWay}"/>
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <!-- Left Section (Image + Name + Director) -->
-                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center">
-                                <Image Source="{Binding ImagePath}" MaxWidth="250" Height="Auto" Stretch="UniformToFill" Margin="5"/>
-                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="14" Margin="5" TextAlignment="Center"/>
+                            <!--LeftSection-->
+                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" >
+
+                                <Border BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+                                    <Image Source="{Binding ImagePath}" MaxWidth="200" Height="Auto" Stretch="UniformToFill"/>
+                                </Border>
+
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="20" Margin="10 5 10 5" TextAlignment="Center" Foreground="Black"/>
+
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                                    <TextBlock Text="Director: " FontStyle="Italic" FontSize="12" Margin="2"/>
-                                    <TextBlock Text="{Binding Director}" FontStyle="Italic" FontSize="12" Margin="2"/>
+                                    <TextBlock Text="🎬 Director: " FontWeight="SemiBold" FontSize="14" Foreground="DarkSlateGray"/>
+                                    <TextBlock Text="{Binding Director}" FontSize="14" Foreground="Black"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                                    <TextBlock Text="📅 Year: " FontWeight="SemiBold" FontSize="14" Foreground="DarkSlateGray"/>
+                                    <TextBlock Text="{Binding ReleaseYear}" FontSize="14" Foreground="Black"/>
                                 </StackPanel>
                             </StackPanel>
 
-                            <!-- Middle Section (Description - Stretches to Fill) -->
-                            <StackPanel Grid.Column="1" Orientation="Vertical" Margin="10">
-                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="18"/>
+                            <!--MidSection-->
+                            <StackPanel Grid.Column="1" Orientation="Vertical" Margin="15" VerticalAlignment="Center">
 
-                                <!-- Genres Section -->
-                                <StackPanel Orientation="Horizontal" Margin="5 2 0 0">
-                                    <TextBlock Text="Genres: " FontWeight="Bold" FontSize="12"/>
+                                <TextBlock Text="📖 Description:" FontWeight="Bold" FontSize="16" Foreground="DarkSlateGray" Margin="0 0 0 5"/>
+                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="15" Foreground="Black" Margin="0 0 0 15"/>
+
+                                <StackPanel Orientation="Vertical" Margin="0 5 0 10">
+                                    <TextBlock Text="🎭 Genres:" FontWeight="Bold" FontSize="15" Foreground="DarkSlateGray" Margin="0 0 0 5"/>
                                     <ItemsControl ItemsSource="{Binding Genres}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="2 0 0 0"/>
+                                                <Border Background="LightGray" Padding="5" Margin="3" CornerRadius="5">
+                                                    <TextBlock Text="{Binding}" FontSize="12" Foreground="Black"/>
+                                                </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </StackPanel>
 
-                                <!-- Actors Section -->
-                                <StackPanel Orientation="Horizontal" Margin="5 2 0 0">
-                                    <TextBlock Text="Stars: " FontWeight="Bold" FontSize="12"/>
+                                <StackPanel Orientation="Vertical">
+                                    <TextBlock Text="★" FontSize="14" Foreground="DarkSlateGray" Margin="0 0 5 0"/>
+                                    <TextBlock Text=" Stars:" FontWeight="Bold" FontSize="15" Foreground="DarkSlateGray" Margin="0 0 0 5"/>
                                     <ItemsControl ItemsSource="{Binding Actors}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <TextBlock Text="{Binding}" TextWrapping="Wrap" FontSize="12" Margin="2 0 0 0"/>
+                                                <StackPanel Orientation="Horizontal">
+                                                    <Image Width="18" Height="18" Source="Assets\Icons\star_icon.png" Margin="5,0"/>
+                                                    <TextBlock Text="{Binding}" FontSize="14" Foreground="Black"/>
+                                                    
+                                                </StackPanel>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </StackPanel>
+
                             </StackPanel>
 
-                            <!-- Right Section (Rating + Favorite Button) -->
-                            <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center">
-                                <TextBlock Text="Ocena:" FontWeight="Bold" Margin="5"/>
-                                <ComboBox Width="75" SelectedItem="{Binding Rating}">
-                                    <ComboBoxItem Content="1"/>
-                                    <ComboBoxItem Content="2"/>
-                                    <ComboBoxItem Content="3"/>
-                                    <ComboBoxItem Content="4"/>
-                                    <ComboBoxItem Content="5"/>
-                                </ComboBox>
-                                <Button Width="120" Margin="10"  Click="ToggleFavorite_Click">
+
+                            <!--RightSection-->
+                            <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
+
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                                    <TextBlock Text="Ocena:" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"/>
+                                    <Image Width="18" Height="18" Source="Assets\Icons\star_icon.png" Margin="5,0"/>
+                                    <TextBlock Text="{Binding Rating, StringFormat={}{0}/10}" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"/>
+                                </StackPanel>
+
+                                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
+                                    <TextBlock Text="Tvoja Ocena:" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center" Margin="0,0,2,0"/>
+                                    <ComboBox Width="75" SelectedItem="{Binding UserRating}">
+                                        <ComboBoxItem Content="1"/>
+                                        <ComboBoxItem Content="2"/>
+                                        <ComboBoxItem Content="3"/>
+                                        <ComboBoxItem Content="4"/>
+                                        <ComboBoxItem Content="5"/>
+                                        <ComboBoxItem Content="6"/>
+                                        <ComboBoxItem Content="7"/>
+                                        <ComboBoxItem Content="8"/>
+                                        <ComboBoxItem Content="9"/>
+                                        <ComboBoxItem Content="10"/>
+                                    </ComboBox>
+                                </StackPanel>
+
+                                
+                                <Button Width="130" Padding="5" Margin="10" Click="ToggleFavorite_Click">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
-                                        <Image Width="20" Height="20">
+                                        <Image Width="22" Height="22">
                                             <Image.Style>
                                                 <Style TargetType="Image">
-                                                    <Setter Property="Source" Value="C:\Users\STANOJA\Desktop\faks2sem3god\MovieViewer\MovieViewer\Assets\Icons\heartBlack.png"/>
+                                                    <Setter Property="Source" Value="Assets/Icons/heartBlack.png"/>
                                                     <Style.Triggers>
                                                         <DataTrigger Binding="{Binding IsFavorite}" Value="True">
-                                                            <Setter Property="Source" Value="C:\Users\STANOJA\Desktop\faks2sem3god\MovieViewer\MovieViewer\Assets\Icons\heartColor.png"/>
+                                                            <Setter Property="Source" Value="Assets/Icons/heartColor.png"/>
                                                         </DataTrigger>
                                                     </Style.Triggers>
                                                 </Style>
                                             </Image.Style>
                                         </Image>
-                                        <TextBlock Text=" Priljubljeno" Margin="5 0 0 0"/>
+                                        <TextBlock Text=" Priljubljeno" FontSize="14" FontWeight="SemiBold" Margin="5 0 0 0"/>
                                     </StackPanel>
                                 </Button>
 
                             </StackPanel>
+
                         </Grid>
                     </Border>
 
