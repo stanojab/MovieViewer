@@ -41,6 +41,7 @@ namespace MovieViewer
         {
             Application.Current.Shutdown();
         }
+       
 
     }
 

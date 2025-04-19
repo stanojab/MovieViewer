@@ -23,7 +23,7 @@
             <MenuItem Header="Filmi">
                 <MenuItem Header="Dodaj statično" Command="{Binding AddStaticMovieCommand}"/>
                 <MenuItem Header="Uredi statično" Command="{Binding EditStaticMovieCommand}"   />
-                <MenuItem Header="Dodaj"/>
+                <MenuItem Header="Dodaj" Command="{Binding OpenAddMovieCommand}" />
                 <MenuItem Header="Uredi"/>
                 <MenuItem Header="Odstrani" Command="{Binding RemoveMovieCommand}"/>
             </MenuItem>

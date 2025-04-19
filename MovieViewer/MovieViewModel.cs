@@ -38,6 +38,8 @@ namespace MovieViewer
 
         public ICommand EditStaticMovieCommand { get; }
 
+        public ICommand OpenAddMovieCommand { get; }
+
         public MovieViewModel()
         {
             Movies = new ObservableCollection<Movie>
@@ -88,6 +90,7 @@ namespace MovieViewer
                   CanRemoveMovie
              );
             EditStaticMovieCommand = new RelayCommand(EditStaticMovie,CanEditMovie);
+            OpenAddMovieCommand = new RelayCommand(_ => OpenAddMovieDialog());
         }
 
 
@@ -136,6 +139,18 @@ namespace MovieViewer
         {
             return SelectedMovie != null;
         }
+        private void OpenAddMovieDialog()
+        {
+            var window = new AddMovieWindow();
+           
+
+            if (window.ShowDialog() == true && window.NewMovie != null)
+            {
+                Movies.Add(window.NewMovie);
+            }
+        }
 
     }
+
+
 }
