@@ -5,55 +5,44 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MovieViewer"
         mc:Ignorable="d"
-        Title="MovieViewer" Height="900" Width="1200">
-   
-    
+        Title="MovieViewer" Height="900" Width="1200"
+        Background="{StaticResource WindowBackgroundBrush}">
+
+    <Window.Resources>
+        <ResourceDictionary Source="Styles.xaml"/>
+    </Window.Resources>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
-            
             <RowDefinition Height="*"/>
-            
         </Grid.RowDefinitions>
 
-        <Menu Grid.Row="0">
-            <MenuItem Header="Datoteka">
-                <MenuItem Header="Izhod" Click="Izhod_Click"/>
+        <Menu Grid.Row="0" Style="{StaticResource MainMenuStyle}">
+            <MenuItem Header="Datoteka" Style="{StaticResource MenuItemStyle}">
+                <MenuItem Header="Izhod" Click="Izhod_Click" Style="{StaticResource SubMenuItemStyle}"/>
             </MenuItem>
-            <MenuItem Header="Filmi">
-                <MenuItem Header="Dodaj statično" Command="{Binding AddStaticMovieCommand}"/>
-                <MenuItem Header="Uredi statično" Command="{Binding EditStaticMovieCommand}"   />
-                <MenuItem Header="Dodaj" Command="{Binding OpenAddMovieCommand}" />
-                <MenuItem Header="Uredi"/>
-                <MenuItem Header="Odstrani" Command="{Binding RemoveMovieCommand}"/>
+            <MenuItem Header="Filmi" Style="{StaticResource MenuItemStyle}">
+                <MenuItem Header="Dodaj statično" Command="{Binding AddStaticMovieCommand}" Style="{StaticResource SubMenuItemStyle}"/>
+                <MenuItem Header="Uredi statično" Command="{Binding EditStaticMovieCommand}" Style="{StaticResource SubMenuItemStyle}"/>
+                <MenuItem Header="Dodaj" Command="{Binding OpenAddMovieCommand}" Style="{StaticResource SubMenuItemStyle}"/>
+                <MenuItem Header="Uredi" Command="{Binding OpenEditMovieWindowCommand}" Style="{StaticResource SubMenuItemStyle}"/>
+                <MenuItem Header="Odstrani" Command="{Binding RemoveMovieCommand}" Style="{StaticResource SubMenuItemStyle}"/>
             </MenuItem>
         </Menu>
 
-        
-        <ListView Name="MovieListView" Grid.Row="1" ItemsSource="{Binding Movies}" 
+      
+        <ListView Name="MovieListView" Grid.Row="1" 
+                  Style="{StaticResource MovieListViewStyle}"
+                  ItemContainerStyle="{StaticResource MovieItemContainerStyle}"
+                  ItemsSource="{Binding Movies}" 
                   SelectedItem="{Binding SelectedMovie, Mode=TwoWay}" 
                   MouseDoubleClick="MovieListView_DoubleClick"
-                  HorizontalContentAlignment="Stretch"
-                  HorizontalAlignment="Stretch"
                   ScrollViewer.HorizontalScrollBarVisibility="Disabled">
-         
+
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Border BorderThickness="3" Padding="5" Margin="5" CornerRadius="10">
-                        <Border.Style>
-                            <Style TargetType="Border">
-                                <Setter Property="BorderBrush" Value="Gray"/>
-                                
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding IsFavorite}" Value="True">
-                                        <Setter Property="BorderBrush" Value="Gold"/>
-                                        <Setter Property="BorderThickness" Value="100"/>
-                                        
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Border.Style>
-
+                    <Border Style="{StaticResource MovieItemBorderStyle}">
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
@@ -61,76 +50,74 @@
                                 <ColumnDefinition Width="Auto"/>
                             </Grid.ColumnDefinitions>
 
-                            <!--LeftSection-->
-                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center" >
-
-                                <Border BorderThickness="2" BorderBrush="Gray" CornerRadius="5" Margin="5">
+                            <!-- Left Section -->
+                            <StackPanel Grid.Column="0" Orientation="Vertical" VerticalAlignment="Center" HorizontalAlignment="Center">
+                                <Border BorderThickness="1" BorderBrush="#FFE0E0E0" CornerRadius="5" Margin="5">
                                     <Image Source="{Binding ImagePath}" MaxWidth="200" Height="Auto" Stretch="UniformToFill"/>
                                 </Border>
 
-                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="20" Margin="10 5 10 5" TextAlignment="Center" Foreground="Black"/>
+                                <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="20" Margin="10,5" TextAlignment="Center" Foreground="{StaticResource PrimaryBrush}"/>
 
                                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                                     <TextBlock Text="🎬 Director: " FontWeight="SemiBold" FontSize="14" Foreground="DarkSlateGray"/>
                                     <TextBlock Text="{Binding Director}" FontSize="14" Foreground="Black"/>
                                 </StackPanel>
 
-                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0 5 0 0">
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,5">
                                     <TextBlock Text="📅 Year: " FontWeight="SemiBold" FontSize="14" Foreground="DarkSlateGray"/>
                                     <TextBlock Text="{Binding ReleaseYear}" FontSize="14" Foreground="Black"/>
                                 </StackPanel>
                             </StackPanel>
 
-                            <!--MidSection-->
+                            <!-- Middle Section -->
                             <StackPanel Grid.Column="1" Orientation="Vertical" Margin="15" VerticalAlignment="Center">
+                                <TextBlock Text="📖 Description:" FontWeight="Bold" FontSize="16" Foreground="DarkSlateGray" Margin="0,0,0,5"/>
+                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="15" Foreground="Black" Margin="0,0,0,15"/>
 
-                                <TextBlock Text="📖 Description:" FontWeight="Bold" FontSize="16" Foreground="DarkSlateGray" Margin="0 0 0 5"/>
-                                <TextBlock Text="{Binding Description}" TextWrapping="Wrap" FontSize="15" Foreground="Black" Margin="0 0 0 15"/>
-
-                                <StackPanel Orientation="Vertical" Margin="0 5 0 10">
-                                    <TextBlock Text="🎭 Genres:" FontWeight="Bold" FontSize="15" Foreground="DarkSlateGray" Margin="0 0 0 5"/>
+                                <StackPanel Orientation="Vertical" Margin="0,5,0,10">
+                                    <TextBlock Text="🎭 Genres:" FontWeight="Bold" FontSize="15" Foreground="DarkSlateGray" Margin="0,0,0,5"/>
                                     <ItemsControl ItemsSource="{Binding Genres}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <Border Background="LightGray" Padding="5" Margin="3" CornerRadius="5">
-                                                    <TextBlock Text="{Binding}" FontSize="12" Foreground="Black"/>
+                                                <Border Style="{StaticResource GenreTagStyle}">
+                                                    <TextBlock Text="{Binding}" Style="{StaticResource GenreTextStyle}"/>
                                                 </Border>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
+                                        <ItemsControl.ItemsPanel>
+                                            <ItemsPanelTemplate>
+                                                <WrapPanel/>
+                                            </ItemsPanelTemplate>
+                                        </ItemsControl.ItemsPanel>
                                     </ItemsControl>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Vertical">
-                                    <TextBlock Text="★" FontSize="14" Foreground="DarkSlateGray" Margin="0 0 5 0"/>
-                                    <TextBlock Text=" Stars:" FontWeight="Bold" FontSize="15" Foreground="DarkSlateGray" Margin="0 0 0 5"/>
+                                    <TextBlock Text="★ Stars:" FontWeight="Bold" FontSize="15" Foreground="DarkSlateGray" Margin="0,0,0,5"/>
                                     <ItemsControl ItemsSource="{Binding Actors}">
                                         <ItemsControl.ItemTemplate>
                                             <DataTemplate>
-                                                <StackPanel Orientation="Horizontal">
+                                                <StackPanel Orientation="Horizontal" Style="{StaticResource ActorItemStyle}">
                                                     <Image Width="18" Height="18" Source="Assets\Icons\star_icon.png" Margin="5,0"/>
                                                     <TextBlock Text="{Binding}" FontSize="14" Foreground="Black"/>
-                                                    
                                                 </StackPanel>
                                             </DataTemplate>
                                         </ItemsControl.ItemTemplate>
                                     </ItemsControl>
                                 </StackPanel>
-
                             </StackPanel>
 
-
-                            <!--RightSection-->
+                            <!-- Right Section -->
                             <StackPanel Grid.Column="2" Orientation="Vertical" HorizontalAlignment="Stretch" VerticalAlignment="Center" Margin="10">
-
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                                    <TextBlock Text="Ocena:" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"/>
+                                    <TextBlock Text="Ocena:" Style="{StaticResource RatingTextStyle}"/>
                                     <Image Width="18" Height="18" Source="Assets\Icons\star_icon.png" Margin="5,0"/>
-                                    <TextBlock Text="{Binding Rating, StringFormat={}{0}/10}" FontWeight="Bold" FontSize="14" VerticalAlignment="Center"/>
+                                    <TextBlock Text="{Binding Rating, StringFormat={}{0}/10}" Style="{StaticResource RatingTextStyle}"/>
                                 </StackPanel>
 
                                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="5">
-                                    <TextBlock Text="Tvoja Ocena:" FontWeight="SemiBold" FontSize="13" VerticalAlignment="Center" Margin="0,0,2,0"/>
-                                    <ComboBox Width="75" SelectedItem="{Binding UserRating}">
+                                    <TextBlock Text="Tvoja Ocena:" Style="{StaticResource RatingTextStyle}" Margin="0,0,2,0"/>
+                                    <ComboBox Style="{StaticResource RatingComboBoxStyle}" SelectedItem="{Binding UserRating}">
                                         <ComboBoxItem Content="1"/>
                                         <ComboBoxItem Content="2"/>
                                         <ComboBoxItem Content="3"/>
@@ -144,8 +131,7 @@
                                     </ComboBox>
                                 </StackPanel>
 
-                                
-                                <Button Width="130" Padding="5" Margin="10" Click="ToggleFavorite_Click">
+                                <Button Style="{StaticResource FavoriteButtonStyle}" Click="ToggleFavorite_Click">
                                     <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                                         <Image Width="22" Height="22">
                                             <Image.Style>
@@ -159,15 +145,12 @@
                                                 </Style>
                                             </Image.Style>
                                         </Image>
-                                        <TextBlock Text=" Priljubljeno" FontSize="14" FontWeight="SemiBold" Margin="5 0 0 0"/>
+                                        <TextBlock Text=" Priljubljeno" Style="{StaticResource FavoriteButtonTextStyle}"/>
                                     </StackPanel>
                                 </Button>
-
                             </StackPanel>
-
                         </Grid>
                     </Border>
-
                 </DataTemplate>
             </ListView.ItemTemplate>
         </ListView>

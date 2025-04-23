@@ -55,9 +55,9 @@ namespace MovieViewer
                 return;
             }
 
-            if (!double.TryParse(RatingBox.Text, out double rating) || rating<0)
+            if (!double.TryParse(RatingBox.Text, out double rating) || rating<1 || rating > 10)
             {
-                MessageBox.Show("Rating must be a positive number.", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                MessageBox.Show("Rating must 1-10", "Validation Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 

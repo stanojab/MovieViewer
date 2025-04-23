@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
+using System.Windows;
 
 namespace MovieViewer
 {
@@ -26,11 +27,15 @@ namespace MovieViewer
             {
                 _selectedMovie = value;
                 OnPropertyChanged(nameof(SelectedMovie));
-                CommandManager.InvalidateRequerySuggested();  
+                CommandManager.InvalidateRequerySuggested();
+                if (_editWindow != null && _editWindow.IsVisible)
+                {
+                    _editWindow.UpdateMovie(value);  
+                }
             }
         }
 
-
+        private EditWindow? _editWindow;
 
         public ICommand AddStaticMovieCommand { get; }
 
@@ -39,6 +44,8 @@ namespace MovieViewer
         public ICommand EditStaticMovieCommand { get; }
 
         public ICommand OpenAddMovieCommand { get; }
+
+        public ICommand OpenEditMovieWindowCommand { get; }
 
         public MovieViewModel()
         {
@@ -91,6 +98,7 @@ namespace MovieViewer
              );
             EditStaticMovieCommand = new RelayCommand(EditStaticMovie,CanEditMovie);
             OpenAddMovieCommand = new RelayCommand(_ => OpenAddMovieDialog());
+            OpenEditMovieWindowCommand = new RelayCommand(OpenEditMovieWindow, CanEditMovie);
         }
 
 
@@ -147,6 +155,58 @@ namespace MovieViewer
             if (window.ShowDialog() == true && window.NewMovie != null)
             {
                 Movies.Add(window.NewMovie);
+            }
+        }
+
+        private void OpenEditMovieWindow(object? parameter)
+        {
+            if (_editWindow == null || !_editWindow.IsVisible)
+            {
+
+                _editWindow = new EditWindow(SelectedMovie);
+           
+                _editWindow.Owner = Application.Current.MainWindow;
+                _editWindow.DataContext = this;
+                _editWindow.Topmost = true;
+                _editWindow.Show();
+            }
+            else
+            {
+                _editWindow.Activate();
+                _editWindow.UpdateMovie(SelectedMovie);  
+            }
+        }
+
+
+
+
+        public string GenresText
+        {
+            get => SelectedMovie != null ? string.Join(", ", SelectedMovie.Genres) : "";
+            set
+            {
+                if (SelectedMovie != null)
+                {
+                    SelectedMovie.Genres = new ObservableCollection<string>(
+                        value.Split(',').Select(g => g.Trim())
+                    );
+                    OnPropertyChanged(nameof(GenresText));
+                }
+            }
+        }
+
+        public string ActorsText
+        {
+            get => SelectedMovie != null ? string.Join(", ", SelectedMovie.Actors) : "";
+            set
+            {
+                if (SelectedMovie != null)
+                {
+                    SelectedMovie.Actors = new ObservableCollection<string>(
+                        value.Split(',').Select(a => a.Trim())
+                    );
+                    OnPropertyChanged(nameof(ActorsText));
+                }
             }
         }
 

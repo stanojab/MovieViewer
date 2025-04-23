@@ -13,6 +13,8 @@ namespace MovieViewer
         public ObservableCollection<Movie> Movies { get; set; }
         public Movie? SelectedMovie { get; set; }
         public MovieViewModel ViewModel { get; set; }
+ 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -41,7 +43,8 @@ namespace MovieViewer
         {
             Application.Current.Shutdown();
         }
-       
+
+
 
     }
 
